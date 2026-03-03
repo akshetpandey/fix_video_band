@@ -1,9 +1,9 @@
-# fix-video
+# fix-video-band
 
 Detect and repair stuck-pixel vertical bands in video files.
 
 Some cameras produce a narrow column of corrupted pixels — a "stuck band" — that
-appears at a fixed horizontal position throughout a clip.  `fix-video` automatically
+appears at a fixed horizontal position throughout a clip.  `fix-video-band` automatically
 locates the band per scene cut and rebuilds those columns using OpenCV's content-aware
 inpainting (Telea Fast Marching Method), then re-muxes the original audio.
 
@@ -17,27 +17,27 @@ inpainting (Telea Fast Marching Method), then re-muxes the original audio.
 ### uvx (run without installing)
 
 ```sh
-uvx fix-video input.mp4 output.mp4
+uvx fix-video-band input.mp4 output.mp4
 ```
 
 ### uv tool (persistent install)
 
 ```sh
-uv tool install fix-video
-fix-video input.mp4 output.mp4
+uv tool install fix-video-band
+fix-video-band input.mp4 output.mp4
 ```
 
 ### pip
 
 ```sh
-pip install fix-video
-fix-video input.mp4 output.mp4
+pip install fix-video-band
+fix-video-band input.mp4 output.mp4
 ```
 
 ## Usage
 
 ```
-fix-video INPUT OUTPUT [options]
+fix-video-band INPUT OUTPUT [options]
 ```
 
 ### Arguments
@@ -112,16 +112,16 @@ output file (no re-encode).
 
 ```sh
 # Basic — auto-select band, write to fixed.mp4
-fix-video raw.mp4 fixed.mp4
+fix-video-band raw.mp4 fixed.mp4
 
 # Fewer scene cuts, prompt for every shot
-fix-video raw.mp4 fixed.mp4 --scene-thresh 0.5 --auto-thresh 0
+fix-video-band raw.mp4 fixed.mp4 --scene-thresh 0.5 --auto-thresh 0
 
 # Wider defect band, lower detection sensitivity
-fix-video raw.mp4 fixed.mp4 --band-width 6 --detect-z 4.0
+fix-video-band raw.mp4 fixed.mp4 --band-width 6 --detect-z 4.0
 
 # Force manual band entry for every shot
-fix-video raw.mp4 fixed.mp4 --auto-thresh 1.0
+fix-video-band raw.mp4 fixed.mp4 --auto-thresh 1.0
 ```
 
 ## Frame previews

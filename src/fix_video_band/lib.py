@@ -25,23 +25,23 @@ def run_ffmpeg_scene_detect(input_path: str, thresh: float) -> list[float]:
     Returns sorted unique cut timestamps (seconds) from ffmpeg's scene detection.
     """
     cmd = [
-        "ffmpeg",
-        "-hide_banner",
-        "-nostats",
-        "-i",
+        'ffmpeg',
+        '-hide_banner',
+        '-nostats',
+        '-i',
         input_path,
-        "-vf",
+        '-vf',
         f"select='gt(scene,{thresh})',showinfo",
-        "-f",
-        "null",
-        "-",
+        '-f',
+        'null',
+        '-',
     ]
     p = subprocess.run(cmd, capture_output=True, text=True, check=True)  # noqa: S603
-    stderr = p.stderr or ""
+    stderr = p.stderr or ''
 
     times: list[float] = []
     for line in stderr.splitlines():
-        m = re.search(r"pts_time:([0-9]*\.?[0-9]+)", line)
+        m = re.search(r'pts_time:([0-9]*\.?[0-9]+)', line)
         if m:
             times.append(float(m.group(1)))
 
@@ -79,7 +79,7 @@ def rolling_median_1d(arr: np.ndarray, k: int) -> np.ndarray:
     assert k % 2 == 1  # noqa: S101
     assert k >= 3  # noqa: PLR2004, S101
     pad = k // 2
-    a = np.pad(arr, (pad, pad), mode="reflect")
+    a = np.pad(arr, (pad, pad), mode='reflect')
     windows = np.stack([a[i : i + arr.shape[0]] for i in range(k)], axis=0)
     return np.median(windows, axis=0)  # type:ignore[no-any-return]
 
@@ -115,7 +115,7 @@ def find_band_candidates(  # noqa: PLR0914
 
     combined = z_per_channel.max(axis=1)
     kernel = np.ones(band_width, dtype=np.float32) / band_width
-    windowed = np.convolve(combined, kernel, mode="valid")
+    windowed = np.convolve(combined, kernel, mode='valid')
 
     med_w = float(np.median(windowed))
     mad_w = float(np.median(np.abs(windowed - med_w))) + 1e-6
@@ -179,7 +179,7 @@ def repair_band_linear(frame_bgr: np.ndarray, band: Band, pad: int) -> np.ndarra
     width = x1 - x0 + 1
     t = np.linspace(0.0, 1.0, width, dtype=np.float32)[None, :, None]  # (1, width, 1)
 
-    left_px = out[:, xl : xl + 1, :].astype(np.float32)   # (H,1,3)
+    left_px = out[:, xl : xl + 1, :].astype(np.float32)  # (H,1,3)
     right_px = out[:, xr : xr + 1, :].astype(np.float32)  # (H,1,3)
 
     fill = (1.0 - t) * left_px + t * right_px
