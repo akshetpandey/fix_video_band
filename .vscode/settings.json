@@ -1,0 +1,34 @@
+{
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.formatDocument": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true
+  },
+  "cSpell.allowCompoundWords": true,
+  "cSpell.enabledFileTypes": {
+    "editorconfig": true,
+  },
+  "cSpell.language": "en,en-US",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.formatDocument": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.preferDaemon": true,
+  "mypy-type-checker.reportingScope": "workspace",
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.userFileIndexingLimit": 10000,
+  "ruff.configurationPreference": "filesystemFirst",
+  "ruff.nativeServer": true,
+  "shellformat.useEditorConfig": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+}

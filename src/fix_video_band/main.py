@@ -92,14 +92,10 @@ def main() -> None:  # noqa: C901, PLR0912, PLR0914, PLR0915
     )
 
     shots = build_shots(cut_times, duration=duration, min_shot_len=args.min_shot_len)
-    console.print(
-        f'  [dim]Cuts found:[/] [bold]{len(cut_times)}[/]  →  [dim]Shots:[/] [bold]{len(shots)}[/]'
-    )
+    console.print(f'  [dim]Cuts found:[/] [bold]{len(cut_times)}[/]  →  [dim]Shots:[/] [bold]{len(shots)}[/]')
 
     if not shots:
-        console.print(
-            '[bold red]ERROR:[/] No shots found. Adjust [dim]--scene-thresh[/] or [dim]--min-shot-len[/].'
-        )
+        console.print('[bold red]ERROR:[/] No shots found. Adjust [dim]--scene-thresh[/] or [dim]--min-shot-len[/].')
         cap.release()
         raise SystemExit(1)
 
@@ -149,16 +145,12 @@ def main() -> None:  # noqa: C901, PLR0912, PLR0914, PLR0915
             if band is not None:
                 per_frame_detections += 1
                 last_good_frame = frame
-                console.print(
-                    f'    [dim]t={t:8.3f}s[/]  [green]✓[/]  band x=[{band.x0}..{band.x1}]'
-                )
+                console.print(f'    [dim]t={t:8.3f}s[/]  [green]✓[/]  band x=[{band.x0}..{band.x1}]')
             else:
                 console.print(f'    [dim]t={t:8.3f}s[/]  [yellow]✗  no band[/]')
 
         if not col_means:
-            console.print(
-                f'\n  [bold red]ERROR: Shot {i + 1} — could not read any frames![/]'
-            )
+            console.print(f'\n  [bold red]ERROR: Shot {i + 1} — could not read any frames![/]')
             cap.release()
             raise SystemExit(1)
 
@@ -193,7 +185,7 @@ def main() -> None:  # noqa: C901, PLR0912, PLR0914, PLR0915
             candidates,
             selected_idx=0,
             label=f'Shot {i + 1} / {len(shots)}  —  {len(candidates)} candidate(s)  '
-            f'[aggregate, {per_frame_detections}/{len(col_means)} per-frame hits]'
+            f'[aggregate, {per_frame_detections}/{len(col_means)} per-frame hits]',
         )
         display_frame(preview, cols=args.display_cols, terminal=terminal)
         print()  # noqa: T201
