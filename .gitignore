@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# uv
+.uv/
+
+# Distribution / packaging
+MANIFEST
+pip-wheel-metadata/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Type checking
+.mypy_cache/
+.pytype/
+.ruff_cache/
+
+# IDEs
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Temporary / intermediate output
+__fixed_video.mp4
+*.tmp
+*.m4v
