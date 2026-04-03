@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import math
+import os
 import subprocess  # noqa: S404
 
 import cv2
@@ -265,7 +266,7 @@ def main() -> None:  # noqa: C901, PLR0912, PLR0914, PLR0915
 
     current_shot = shots[shot_idx]
     current_band = shot_bands[shot_idx]
-    shot_end_frame = math.floor(current_shot.t1 * fps + 1e-6)
+    shot_end_frame = math.ceil(current_shot.t1 * fps - 1e-6)
 
     with Progress(
         SpinnerColumn(),
@@ -289,7 +290,7 @@ def main() -> None:  # noqa: C901, PLR0912, PLR0914, PLR0915
                 shot_idx += 1
                 current_shot = shots[shot_idx]
                 current_band = shot_bands[shot_idx]
-                shot_end_frame = math.floor(current_shot.t1 * fps + 1e-6)
+                shot_end_frame = math.ceil(current_shot.t1 * fps - 1e-6)
 
             frame = repair_band_inpaint(frame, current_band, radius=args.pad)
             fixed_frames += 1
@@ -321,6 +322,7 @@ def main() -> None:  # noqa: C901, PLR0912, PLR0914, PLR0915
             args.output,
         ]
         subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # noqa: S603
+    os.remove(args.tmp_video)
 
     # ── Summary ───────────────────────────────────────────────────────────────
     table = Table(show_header=True, header_style='bold dim', box=None, padding=(0, 2))

@@ -63,16 +63,16 @@ def build_shots(cut_times: list[float], duration: float, min_shot_len: float) ->
             continue
         merged.append(b)
 
+    # Ensure all frames are covered: if duration was skipped (too close to
+    # the last kept boundary), extend that boundary rather than creating a
+    # trailing segment that is too short.
     if merged[-1] != duration:
-        merged.append(duration)
+        if len(merged) >= 2:  # noqa: PLR2004
+            merged[-1] = duration
+        else:
+            merged.append(duration)
 
-    shots: list[Shot] = []
-    for i in range(len(merged) - 1):
-        t0, t1 = merged[i], merged[i + 1]
-        if t1 - t0 >= min_shot_len:
-            shots.append(Shot(t0=t0, t1=t1))
-
-    return shots
+    return [Shot(t0=merged[i], t1=merged[i + 1]) for i in range(len(merged) - 1)]
 
 
 def rolling_median_1d(arr: np.ndarray, k: int) -> np.ndarray:
