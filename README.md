@@ -14,24 +14,32 @@ inpainting (Telea Fast Marching Method), then re-muxes the original audio.
 
 ## Installation
 
-### uvx (run without installing)
+### uvx (run directly from GitHub, no install needed)
 
 ```sh
-uvx fix-video-band input.mp4 output.mp4
+uvx --from git+https://github.com/akshetpandey/fix_video_band fix-video-band input.mp4 output.mp4
 ```
 
-### uv tool (persistent install)
+### uv tool (persistent install from GitHub)
 
 ```sh
-uv tool install fix-video-band
+uv tool install git+https://github.com/akshetpandey/fix_video_band
 fix-video-band input.mp4 output.mp4
 ```
 
-### pip
+### pip (install from GitHub)
 
 ```sh
-pip install fix-video-band
+pip install git+https://github.com/akshetpandey/fix_video_band
 fix-video-band input.mp4 output.mp4
+```
+
+### From a local clone
+
+```sh
+git clone https://github.com/akshetpandey/fix_video_band.git
+cd fix_video_band
+uv run fix-video-band input.mp4 output.mp4
 ```
 
 ## Usage
@@ -108,7 +116,42 @@ content — edges, gradients, fine texture — without assumptions about the def
 After all frames are written, `ffmpeg` muxes the original audio stream into the
 output file (no re-encode).
 
-## Example
+## Example run
+
+Running the tool on a video with a stuck-pixel band at column 304:
+
+```sh
+fix-video-band input.m4v output.m4v
+```
+
+### Step 1 — Scene detection and band estimation
+
+The tool splits the video into shots, samples frames from each, and detects
+candidate bands using robust statistical analysis. In a supported terminal
+(iTerm2 or Ghostty) it displays inline frame previews showing the raw reference
+frame and an annotated view with all candidates marked:
+
+![Band detection — inline frame previews with annotated candidates](doc/screenshot_detection.png)
+
+The green line marks the winning candidate; yellow lines show runners-up.  When
+the best candidate clearly dominates, it is auto-selected.  Otherwise an
+interactive prompt lets you choose.
+
+### Step 2 — Frame processing
+
+Every frame is decoded sequentially and the detected band columns are repaired
+using OpenCV's Telea inpainting algorithm.  A progress bar tracks the work:
+
+![Frame processing progress bar](doc/screenshot_processing.png)
+
+### Step 3 — Summary
+
+After all frames are written, the original audio is muxed into the output file.
+A summary table lists each shot, its time range, and the band that was repaired:
+
+![Completion summary table](doc/screenshot_summary.png)
+
+### More examples
 
 ```sh
 # Basic — auto-select band, write to fixed.mp4
@@ -126,9 +169,16 @@ fix-video-band raw.mp4 fixed.mp4 --auto-thresh 1.0
 
 ## Frame previews
 
-When running in [iTerm2](https://iterm2.com/), reference frames and annotated
-candidate previews are displayed inline.  In other terminals the escape sequences
-are silently ignored.
+Inline frame previews are displayed when running in a terminal that supports the
+iTerm2 or Kitty graphics protocols:
+
+- [iTerm2](https://iterm2.com/)
+- [Ghostty](https://ghostty.org/)
+- [WezTerm](https://wezfurlong.org/wezterm/)
+- [Konsole](https://konsole.kde.org/)
+
+In unsupported terminals, image output is silently skipped and the tool still
+works — you just won't see the visual previews.
 
 ## License
 
